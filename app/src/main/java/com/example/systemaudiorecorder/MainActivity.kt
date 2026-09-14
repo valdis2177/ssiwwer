@@ -35,7 +35,7 @@ import java.util.Date
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { MaterialTheme { RecorderApp() } }
+        setContent { MaterialTheme(colorScheme = darkColorScheme()) { RecorderApp() } }
     }
 }
 

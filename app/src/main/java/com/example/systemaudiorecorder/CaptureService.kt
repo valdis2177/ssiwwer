@@ -71,21 +71,14 @@ class CaptureService : Service() {
         var pfd: ParcelFileDescriptor? = null; var outputUri: Uri? = null; var started = false; var savedName: String? = null
         try {
             val manager = getSystemService(MediaProjectionManager::class.java)
-             val mediaProjection = manager.getMediaProjection(resultCode, resultData)
-    ?: error("Не удалось получить MediaProjection")
-
-projection = mediaProjection
-
-mediaProjection.registerCallback(
-    object : MediaProjection.Callback() {
-        override fun onStop() {
-            recording.set(false)
-        }
-    },
-    Handler(Looper.getMainLooper())
-)
-
-val cfg = AudioPlaybackCaptureConfiguration.Builder(mediaProjection)
+            val mediaProjection = manager.getMediaProjection(resultCode, resultData)
+                ?: error("Не удалось получить MediaProjection")
+            projection = mediaProjection
+            mediaProjection.registerCallback(
+                object : MediaProjection.Callback() { override fun onStop() { recording.set(false) } },
+                Handler(Looper.getMainLooper())
+            )
+            val cfg = AudioPlaybackCaptureConfiguration.Builder(mediaProjection)
                 .addMatchingUsage(AudioAttributes.USAGE_MEDIA)
                 .addMatchingUsage(AudioAttributes.USAGE_GAME)
                 .addMatchingUsage(AudioAttributes.USAGE_UNKNOWN).build()
